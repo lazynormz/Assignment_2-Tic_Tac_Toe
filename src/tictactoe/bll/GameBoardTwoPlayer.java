@@ -6,17 +6,31 @@ package tictactoe.bll;
  */
 public class GameBoardTwoPlayer implements IGameModel {
 
+    /*
+     * Player data
+     * */
     private int currentPlayer = 0;
 
+    /*
+    * Game data
+    * */
     private final int COLS = 3;
     private final int ROWS = 3;
 
+    /*
+     * Map data
+     * */
     private String[] map;
     private int availableSlots;
 
-    protected GameBoardTwoPlayer() {
+    //Clears the board and it's data to get it ready for a new round of play.
+    private void clearBoard(){
         map = new String[COLS * ROWS];
         availableSlots = COLS * ROWS;
+    }
+
+    protected GameBoardTwoPlayer() {
+        clearBoard();
     }
 
     /**
@@ -41,7 +55,9 @@ public class GameBoardTwoPlayer implements IGameModel {
      */
     @Override
     public boolean play(int col, int row) {
+        //Check that the cell is empty, and that the game is still running
         if(map[col + row * COLS] == null && isGameOver() == false){
+            //Set the cell value to the correct players character
             map[col + row * COLS] = (currentPlayer == 0) ? "X" : "O";
             currentPlayer = (currentPlayer == 0) ? 1 : 0;
             availableSlots -= 1;
@@ -59,8 +75,9 @@ public class GameBoardTwoPlayer implements IGameModel {
      */
     @Override
     public boolean isGameOver() {
-        if(availableSlots == 0 || getWinner() == 1 || getWinner() == 2){
-            System.out.println("Game Over");
+        //If there are no slots, or either of the players have won,
+        //the game is over, otherwise we're continuing the game
+        if(availableSlots == 0 || getWinner() == 0 || getWinner() == 1){
             return true;
         }
         return false;
@@ -73,14 +90,17 @@ public class GameBoardTwoPlayer implements IGameModel {
      */
     @Override
     public int getWinner() {
+        //Horizontal Lines
         if((map[0] == map[1] && map[1] == map[2]) && map[0] != null) return (map[0] == "X" ? 0 : 1);
-        if((map[3] == map[4] && map[4] == map[5]) && map[3] != null) return (map[0] == "X" ? 0 : 1);
-        if((map[6] == map[7] && map[7] == map[8]) && map[6] != null) return (map[0] == "X" ? 0 : 1);
+        if((map[3] == map[4] && map[4] == map[5]) && map[3] != null) return (map[3] == "X" ? 0 : 1);
+        if((map[6] == map[7] && map[7] == map[8]) && map[6] != null) return (map[6] == "X" ? 0 : 1);
+        //Vertical Lines
         if((map[0] == map[3] && map[3] == map[6]) && map[0] != null) return (map[0] == "X" ? 0 : 1);
-        if((map[1] == map[4] && map[4] == map[7]) && map[1] != null) return (map[0] == "X" ? 0 : 1);
+        if((map[1] == map[4] && map[4] == map[7]) && map[1] != null) return (map[1] == "X" ? 0 : 1);
         if((map[2] == map[5] && map[5] == map[8]) && map[2] != null) return (map[0] == "X" ? 0 : 1);
+        //Diagonal Lines
         if((map[0] == map[4] && map[4] == map[8]) && map[0] != null) return (map[0] == "X" ? 0 : 1);
-        if((map[2] == map[4] && map[4] == map[6]) && map[2] != null) return (map[0] == "X" ? 0 : 1);
+        if((map[2] == map[4] && map[4] == map[6]) && map[2] != null) return (map[2] == "X" ? 0 : 1);
         return -1;
     }
 
@@ -89,8 +109,7 @@ public class GameBoardTwoPlayer implements IGameModel {
      */
     @Override
     public void newGame() {
-        map = new String[COLS * ROWS];
-        availableSlots = COLS * ROWS;
+        clearBoard();
     }
 
 }
