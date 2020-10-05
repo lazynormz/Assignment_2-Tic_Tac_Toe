@@ -6,8 +6,17 @@ package tictactoe.bll;
  */
 public class GameBoardTwoPlayer implements IGameModel {
 
-    protected GameBoardTwoPlayer() {
+    private int currentPlayer = 0;
 
+    private final int COLS = 3;
+    private final int ROWS = 3;
+
+    private String[] map;
+    private int availableSlots;
+
+    protected GameBoardTwoPlayer() {
+        map = new String[COLS * ROWS];
+        availableSlots = COLS * ROWS;
     }
 
     /**
@@ -17,8 +26,7 @@ public class GameBoardTwoPlayer implements IGameModel {
      */
     @Override
     public int getNextPlayer() {
-        //TODO Implement this method
-        return 0;
+        return currentPlayer;
     }
 
     /**
@@ -33,8 +41,14 @@ public class GameBoardTwoPlayer implements IGameModel {
      */
     @Override
     public boolean play(int col, int row) {
-        //TODO Implement this method
-        return true;
+        if(map[col + row * COLS] == null && isGameOver() == false){
+            map[col + row * COLS] = (currentPlayer == 0) ? "X" : "O";
+            currentPlayer = (currentPlayer == 0) ? 1 : 0;
+            availableSlots -= 1;
+            return true;
+        }else {
+            return false;
+        }
     }
 
     /**
@@ -45,7 +59,10 @@ public class GameBoardTwoPlayer implements IGameModel {
      */
     @Override
     public boolean isGameOver() {
-        //TODO Implement this method
+        if(availableSlots == 0 || getWinner() == 1 || getWinner() == 2){
+            System.out.println("Game Over");
+            return true;
+        }
         return false;
     }
 
@@ -56,7 +73,14 @@ public class GameBoardTwoPlayer implements IGameModel {
      */
     @Override
     public int getWinner() {
-        //TODO Implement this method
+        if((map[0] == map[1] && map[1] == map[2]) && map[0] != null) return (map[0] == "X" ? 0 : 1);
+        if((map[3] == map[4] && map[4] == map[5]) && map[3] != null) return (map[0] == "X" ? 0 : 1);
+        if((map[6] == map[7] && map[7] == map[8]) && map[6] != null) return (map[0] == "X" ? 0 : 1);
+        if((map[0] == map[3] && map[3] == map[6]) && map[0] != null) return (map[0] == "X" ? 0 : 1);
+        if((map[1] == map[4] && map[4] == map[7]) && map[1] != null) return (map[0] == "X" ? 0 : 1);
+        if((map[2] == map[5] && map[5] == map[8]) && map[2] != null) return (map[0] == "X" ? 0 : 1);
+        if((map[0] == map[4] && map[4] == map[8]) && map[0] != null) return (map[0] == "X" ? 0 : 1);
+        if((map[2] == map[4] && map[4] == map[6]) && map[2] != null) return (map[0] == "X" ? 0 : 1);
         return -1;
     }
 
@@ -65,7 +89,8 @@ public class GameBoardTwoPlayer implements IGameModel {
      */
     @Override
     public void newGame() {
-        //TODO Implement this method
+        map = new String[COLS * ROWS];
+        availableSlots = COLS * ROWS;
     }
 
 }

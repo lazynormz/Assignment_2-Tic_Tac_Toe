@@ -141,6 +141,7 @@ public class TicTacViewController implements Initializable {
      * Clears the board so that all Buttons of the board do NOT display anything.
      */
     private void clearBoard() {
+        game.newGame();
         for (Node n : gridPane.getChildren()) {
             Button btn = (Button) n;
             btn.setText("");
